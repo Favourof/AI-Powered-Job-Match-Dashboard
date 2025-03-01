@@ -1,6 +1,6 @@
 "use client";
 
-import { Job, JobDetailsProps } from "../type";
+import { JobDetailsProps } from "../type";
 import { useJobContext } from "../context/JobContext";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";

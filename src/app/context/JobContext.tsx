@@ -1,11 +1,18 @@
 "use client";
-import { createContext, useState, useEffect, useContext } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  ReactNode,
+} from "react";
+import { Job, JobContextType, User } from "../type";
 
-const JobContext = createContext<any>(null);
+const JobContext = createContext<JobContextType | null>(null);
 
-export const JobProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState(null);
-  const [jobs, setJobs] = useState([]);
+export const JobProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,7 +42,7 @@ export const JobProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   // Function to set user details
-  const signupUser = (userData: any) => {
+  const signupUser = (userData: User) => {
     setUser(userData);
   };
 
@@ -58,4 +65,10 @@ export const JobProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useJobContext = () => useContext(JobContext);
+export const useJobContext = () => {
+  const context = useContext(JobContext);
+  if (!context) {
+    throw new Error("useJobContext must be used within a JobProvider");
+  }
+  return context;
+};
